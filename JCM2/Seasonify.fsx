@@ -79,8 +79,11 @@ let getSeasonSeries (seasonLink:string) =
         data
         |> Seq.groupBy (fun f -> f.Date)
 
-    groupedFixtures
-        |> Seq.map (fun group -> ((fst group).ToString("yyyy-MM-dd ddd"), [(snd group) |> Seq.fold (fun s f -> s + float (fst f.FT) + float (snd f.FT)) 0.]) )
+    let result = 
+        groupedFixtures
+        |> Seq.map (fun group -> ((fst group).ToString("yyyy-MM-dd ddd"), [(snd group) |> Seq.fold (fun s f -> s + (fst f.FT) + (snd f.FT)) 0]) )
+        |> Seq.map (fun (d, s) -> (d, s |> Seq.sum))
+    result
 
 //Chart.LineChart
 // (goalsByDate,
